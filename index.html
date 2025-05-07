@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sieve of Eratosthenes</title>
+  <title>Sieve of Eratosthenes – Interactive</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -25,8 +25,11 @@
       user-select: none;
       background-color: white;
     }
+    .current {
+      background-color: #87cefa; /* light blue for current prime */
+    }
     .prime {
-      background-color: #90ee90;
+      background-color: #90ee90; /* green for confirmed prime */
     }
     .crossed {
       background-color: #f08080;
@@ -42,9 +45,9 @@
 </head>
 <body>
 
-  <h2>Sieve of Eratosthenes</h2>
-  <p>Click <strong>Start</strong> to eliminate non-prime numbers up to 100.</p>
-  <button id="startBtn">Start</button>
+  <h2>Sieve of Eratosthenes (Interactive)</h2>
+  <p>Click <strong>Next Step</strong> to find the next prime and eliminate its multiples.</p>
+  <button id="nextBtn">Next Step</button>
   <button id="resetBtn">Reset</button>
 
   <div id="grid"></div>
@@ -52,8 +55,11 @@
   <script>
     const limit = 100;
     const gridContainer = document.getElementById('grid');
+    const nextBtn = document.getElementById('nextBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
     let numbers = [];
-    let isRunning = false;
+    let currentIndex = 0;
 
     function createGrid() {
       gridContainer.innerHTML = '';
@@ -65,43 +71,46 @@
         gridContainer.appendChild(div);
         numbers.push({ value: i, element: div, isCrossed: false });
       }
+      currentIndex = 0;
     }
 
-    async function startSieve() {
-      if (isRunning) return;
-      isRunning = true;
+    function nextStep() {
+      // Clear previous current highlight
+      numbers.forEach(n => n.element.classList.remove('current'));
 
-      for (let i = 0; i < numbers.length; i++) {
-        const current = numbers[i];
-        if (!current.isCrossed) {
-          current.element.classList.add('prime');
-          await sleep(400);
-          for (let j = i + 1; j < numbers.length; j++) {
-            const multiple = numbers[j];
-            if (!multiple.isCrossed && multiple.value % current.value === 0) {
-              multiple.element.classList.add('crossed');
-              multiple.isCrossed = true;
-              await sleep(80);
-            }
-          }
+      while (currentIndex < numbers.length && numbers[currentIndex].isCrossed) {
+        currentIndex++;
+      }
+
+      if (currentIndex >= numbers.length) {
+        alert("Sieve complete!");
+        return;
+      }
+
+      const current = numbers[currentIndex];
+      current.element.classList.add('current');
+
+      for (let j = currentIndex + 1; j < numbers.length; j++) {
+        const other = numbers[j];
+        if (!other.isCrossed && other.value % current.value === 0) {
+          other.element.classList.add('crossed');
+          other.isCrossed = true;
         }
       }
 
-      isRunning = false;
+      current.element.classList.remove('current');
+      current.element.classList.add('prime');
+      currentIndex++;
     }
 
     function resetGrid() {
-      isRunning = false;
       createGrid();
     }
 
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    nextBtn.addEventListener('click', nextStep);
+    resetBtn.addEventListener('click', resetGrid);
 
-    document.getElementById('startBtn').addEventListener('click', startSieve);
-    document.getElementById('resetBtn').addEventListener('click', resetGrid);
-
+    // Initialize on load
     createGrid();
   </script>
 
