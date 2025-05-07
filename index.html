@@ -1,125 +1,109 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <title>Sieve of Eratosthenes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(10, 40px);
+      grid-gap: 5px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .number {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      user-select: none;
+      background-color: white;
+    }
+    .prime {
+      background-color: #90ee90;
+    }
+    .crossed {
+      background-color: #f08080;
+      text-decoration: line-through;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Sieve of Eratosthenes&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: Arial, sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#grid {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(10, 40px);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-gap: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.number {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #ccc;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>user-select: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: white;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.prime {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: #90ee90;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.crossed {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: #f08080;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-decoration: line-through;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px 20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h2&gt;Sieve of Eratosthenes&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;p&gt;Click &lt;strong&gt;Start&lt;/strong&gt; to eliminate non-prime numbers up to 100.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button id="startBtn"&gt;Start&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button id="resetBtn"&gt;Reset&lt;/button&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="grid"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const limit = 100;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const gridContainer = document.getElementById('grid');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let numbers = [];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let isRunning = false;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function createGrid() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gridContainer.innerHTML = '';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>numbers = [];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (let i = 2; i &lt;= limit; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const div = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>div.textContent = i;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>div.className = 'number';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>gridContainer.appendChild(div);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>numbers.push({ value: i, element: div, isCrossed: false });</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function startSieve() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (isRunning) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>isRunning = true;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (let i = 0; i &lt; numbers.length; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const current = numbers[i];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (!current.isCrossed) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>current.element.classList.add('prime');</p>
-<p class="p1"><span class="Apple-converted-space">          </span>await sleep(400);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>for (let j = i + 1; j &lt; numbers.length; j++) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const multiple = numbers[j];</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (!multiple.isCrossed &amp;&amp; multiple.value % current.value === 0) {</p>
-<p class="p1"><span class="Apple-converted-space">              </span>multiple.element.classList.add('crossed');</p>
-<p class="p1"><span class="Apple-converted-space">              </span>multiple.isCrossed = true;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>await sleep(80);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>isRunning = false;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function resetGrid() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>isRunning = false;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>createGrid();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function sleep(ms) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return new Promise(resolve =&gt; setTimeout(resolve, ms));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('startBtn').addEventListener('click', startSieve);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('resetBtn').addEventListener('click', resetGrid);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>createGrid();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+  <h2>Sieve of Eratosthenes</h2>
+  <p>Click <strong>Start</strong> to eliminate non-prime numbers up to 100.</p>
+  <button id="startBtn">Start</button>
+  <button id="resetBtn">Reset</button>
+
+  <div id="grid"></div>
+
+  <script>
+    const limit = 100;
+    const gridContainer = document.getElementById('grid');
+    let numbers = [];
+    let isRunning = false;
+
+    function createGrid() {
+      gridContainer.innerHTML = '';
+      numbers = [];
+      for (let i = 2; i <= limit; i++) {
+        const div = document.createElement('div');
+        div.textContent = i;
+        div.className = 'number';
+        gridContainer.appendChild(div);
+        numbers.push({ value: i, element: div, isCrossed: false });
+      }
+    }
+
+    async function startSieve() {
+      if (isRunning) return;
+      isRunning = true;
+
+      for (let i = 0; i < numbers.length; i++) {
+        const current = numbers[i];
+        if (!current.isCrossed) {
+          current.element.classList.add('prime');
+          await sleep(400);
+          for (let j = i + 1; j < numbers.length; j++) {
+            const multiple = numbers[j];
+            if (!multiple.isCrossed && multiple.value % current.value === 0) {
+              multiple.element.classList.add('crossed');
+              multiple.isCrossed = true;
+              await sleep(80);
+            }
+          }
+        }
+      }
+
+      isRunning = false;
+    }
+
+    function resetGrid() {
+      isRunning = false;
+      createGrid();
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startSieve);
+    document.getElementById('resetBtn').addEventListener('click', resetGrid);
+
+    createGrid();
+  </script>
+
 </body>
 </html>
